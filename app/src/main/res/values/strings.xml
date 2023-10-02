@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">GitHubUser</string>
+    <string name="tab_1">Followers</string>
+    <string name="tab_2">Following</string>
+    <string name="follower">Followers %1$d</string>
+    <string name="following">Following %1$d</string>
+    <string name="dark_mode">Dark Mode</string>
+</resources>

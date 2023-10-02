@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="mediumdark">#17181c</color>
+    <color name="verydark">#0B0B0D</color>
+    <color name="lightdark">#17181c</color>
+    <color name="white">#FFFFFF</color>
+    <color name="whitegrey">#FBFBFB</color>
+    <color name="whitegreyblue">#F6F7F9</color>
+
+    <color name="selected_tab_color">#FF0000</color>
+    <color name="unselected_tab_color">#000000</color>
+    <color name="selected_tab_background_color">#FFA500</color>
+</resources>
