@@ -64,4 +64,8 @@
         android:visibility="gone"
         />
 
+    <TextView
+        android:layout_width=""
+        android:layout_height=""/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
