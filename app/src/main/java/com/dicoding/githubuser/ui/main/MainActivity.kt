@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,10 +40,13 @@ class MainActivity : AppCompatActivity() {
                     startActivity(it)
                 }
             }
-
         })
 
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+
+        viewModel.isFailed.observe(this) {
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        }
 
         binding.apply {
             rvUser.layoutManager = LinearLayoutManager(this@MainActivity)

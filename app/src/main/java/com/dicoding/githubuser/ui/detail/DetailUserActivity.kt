@@ -37,6 +37,10 @@ class DetailUserActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(DetailUserViewModel::class.java)
 
+        viewModel.isFailed.observe(this) {
+            Toast.makeText(this,it,Toast.LENGTH_SHORT).show()
+        }
+
         if (username != null) {
             showLoading(true)
             viewModel.setUserDetail(username)

@@ -23,6 +23,9 @@ class DetailUserViewModel(application: Application) : AndroidViewModel(applicati
     private var userDao: FavoriteUserDao?
     private var userDb: UserDatabase?
 
+    private val _isFailed = MutableLiveData<String>()
+    val isFailed : LiveData<String> = _isFailed
+
     init {
         userDb = UserDatabase.getDatabase(application)
         userDao = userDb?.favoriteUserDao()
@@ -44,6 +47,8 @@ class DetailUserViewModel(application: Application) : AndroidViewModel(applicati
                 override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
                     val errorMessage = t.message ?: "Unknown error"
                     errorMessageLiveData.postValue(errorMessage)
+
+                    _isFailed.value = "Data loading error."
                 }
             })
     }
@@ -54,7 +59,7 @@ class DetailUserViewModel(application: Application) : AndroidViewModel(applicati
 
     fun addToFavorite(username: String, id: Int, avatarUrl: String){
         CoroutineScope(Dispatchers.IO).launch {
-             var user = FavoriteUser(
+             val user = FavoriteUser(
                  username,
                  id,
                  avatarUrl

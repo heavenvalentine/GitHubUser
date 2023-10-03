@@ -13,6 +13,9 @@ import retrofit2.Response
 class FollowersViewModel: ViewModel() {
     val listFollowers = MutableLiveData<ArrayList<User>>()
 
+    private val _isFailed = MutableLiveData<String>()
+    val isFailed : LiveData<String> = _isFailed
+
     fun setListFollowers(username: String){
         RetrofitClient.apiInstance
         .getFollowers(username)
@@ -28,6 +31,8 @@ class FollowersViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<ArrayList<User>>, t: Throwable) {
                     Log.e("Failure", t.message ?: "Unknown error")
+
+                    _isFailed.value = "Data loading error."
                 }
 
             })

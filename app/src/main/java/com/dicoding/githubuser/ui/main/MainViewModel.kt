@@ -13,11 +13,14 @@ import retrofit2.Response
 
 class MainViewModel: ViewModel() {
     companion object{
-        private const val TAG = "MainViewModel"
         private const val USERNAME = "heavenvalentine2"
     }
 
     val listUsers = MutableLiveData<ArrayList<User>>()
+
+    private val _isFailed = MutableLiveData<String>()
+    val isFailed : LiveData<String> = _isFailed
+
 
     init {
         setSearchUsers(USERNAME)
@@ -38,6 +41,8 @@ class MainViewModel: ViewModel() {
 
                 override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                     Log.d("Failure", t.message ?: "Unknown error")
+
+                    _isFailed.value = "Data loading error."
                 }
 
             })

@@ -2,6 +2,7 @@ package com.dicoding.githubuser.ui.detail
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,12 +37,22 @@ class FollowersFragment : Fragment(R.layout.fragment_follow) {
         showLoading(true)
         viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(FollowersViewModel::class.java)
         viewModel.setListFollowers(username)
-        viewModel.getListFollowers().observe(viewLifecycleOwner, {
-            if(it!=null){
-                adapter.setList(it)
+        viewModel.getListFollowers().observe(viewLifecycleOwner) { followers ->
+            if (followers != null) {
+                adapter.setList(followers)
                 showLoading(false)
+            } else {
+                showLoading(false)
+                val errorMessage = viewModel.isFailed.value
+                if (!errorMessage.isNullOrEmpty()) {
+                    showError(errorMessage)
+                }
             }
-        })
+        }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroyView() {
