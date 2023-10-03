@@ -1,5 +1,6 @@
 package com.dicoding.githubuser.ui.detail
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -41,28 +42,41 @@ class DetailUserActivity : AppCompatActivity() {
             viewModel.setUserDetail(username)
         }
 
-        viewModel.getUserDetail().observe(this, {
-            if (it != null) {
+        viewModel.getUserDetail().observe(this) { userDetail ->
+            if (userDetail != null) {
                 binding.apply {
-                    tvName.text = it.name
-                    tvUsername.text = it.login
-                    tvFollowers.text = resources.getString(R.string.follower, it.followers)
-                    tvFollowing.text = resources.getString(R.string.following, it.following)
+                    // Set other user details as before
+                    tvName.text = userDetail.name
+                    tvUsername.text = userDetail.login
+                    tvFollowers.text = resources.getString(R.string.follower, userDetail.followers)
+                    tvFollowing.text = resources.getString(R.string.following, userDetail.following)
                     Glide.with(this@DetailUserActivity)
-                        .load(it.avatar_url)
+                        .load(userDetail.avatar_url)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(ivProfile)
+
+                    val githubProfileLink = "https://github.com/${userDetail.login}"
+
+                    share.setOnClickListener {
+                        val sendIntent = Intent()
+                        sendIntent.action = Intent.ACTION_SEND
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, githubProfileLink)
+                        sendIntent.type = "text/plain"
+
+                        val shareIntent = Intent.createChooser(sendIntent, null)
+                        startActivity(shareIntent)
+                    }
 
                     showLoading(false)
                 }
             }
-        })
+        }
 
-        viewModel.getErrorMessageLiveData().observe(this, { errorMessage ->
+        viewModel.getErrorMessageLiveData().observe(this) { errorMessage ->
             if (!errorMessage.isNullOrEmpty()) {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
             }
-        })
+        }
 
         var _isChecked = false
         CoroutineScope(Dispatchers.IO).launch {
